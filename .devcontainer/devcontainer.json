@@ -1,0 +1,49 @@
+{
+  "name": "Rust + Python + CUDA + AI Agents",
+  "build": {
+    "context": "..",
+    "dockerfile": "../Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "fish",
+        "terminal.integrated.profiles.linux": {
+          "fish": {
+            "path": "/usr/bin/fish"
+          },
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "terminal.integrated.automationProfile.linux": {
+          "path": "/usr/bin/fish"
+        }
+      }
+    }
+  },
+  "runArgs": [
+    "--gpus",
+    "all",
+    "--cap-add=SYS_PTRACE",
+    "--security-opt",
+    "seccomp=unconfined",
+    "-p",
+    "12345:12345"
+  ],
+  "mounts": [
+    "source=devcontainer-cargo-cache,target=/usr/local/cargo/registry,type=volume",
+    "source=devcontainer-uv-cache,target=/root/.cache/uv,type=volume",
+    "source=devcontainer-sccache,target=/root/.cache/sccache,type=volume",
+    "source=devcontainer-atuin-history,target=/root/.local/share/atuin,type=volume",
+    "source=devcontainer-npm-cache,target=/root/.npm,type=volume",
+    "source=devcontainer-go-cache,target=/root/go/pkg,type=volume"
+  ],
+  "containerEnv": {
+    "UV_CACHE_DIR": "/root/.cache/uv",
+    "RUSTC_WRAPPER": "sccache",
+    "SHELL": "/usr/bin/fish"
+  },
+  "remoteUser": "root",
+  "postCreateCommand": "chsh -s /usr/bin/fish root 2>/dev/null || true"
+}
