@@ -29,7 +29,9 @@
     "--security-opt",
     "seccomp=unconfined",
     "-p",
-    "12345:12345"
+    "12346:12346",
+    "--ulimit",
+    "memlock=-1:-1"
   ],
   "mounts": [
     "source=devcontainer-cargo-cache,target=/usr/local/cargo/registry,type=volume",
